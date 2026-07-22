@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Checkpoints
+*.pth
+*.pt
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Outputs
+outputs/
+checkpoints/
+
+# OS
+.DS_Store
