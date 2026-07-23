@@ -27,7 +27,7 @@ NUM_CLASSES = 7
 BATCH_SIZE = 32
 
 # Number of times the entire dataset is passed through the model.
-NUM_EPOCHS = 30
+NUM_EPOCHS = 20
 
 # Controls how much the model learns after every update.
 # A value that is too large may overshoot the optimum.
@@ -42,3 +42,5 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # Fix the random seed so that results are reproducible.
 SEED = 42
+
+CHECKPOINT_PATH = "checkpoints/best_model.pth"
