@@ -1,4 +1,5 @@
-from torch.utils.data import DataLoader, random_split
+import torch
+from torch.utils.data import DataLoader, Subset
 from torchvision.datasets import ImageFolder
 
 from configs.config import DATASET_PATH, BATCH_SIZE
@@ -10,42 +11,47 @@ def get_dataloaders():
     Creates DataLoaders for training, validation and testing.
     """
 
-    # Load the complete training dataset.
-    # At this stage, every image uses the training transforms.
-    full_train_dataset = ImageFolder(
+    # Load the same training folder twice.
+    # One copy will use training augmentation.
+    # The other copy will use validation transforms.
+    train_dataset = ImageFolder(
         root=f"{DATASET_PATH}/train",
         transform=train_transform
     )
 
-    # Load the test dataset.
-    # Test images should never be randomly augmented.
+    val_dataset = ImageFolder(
+        root=f"{DATASET_PATH}/train",
+        transform=val_transform
+    )
+
     test_dataset = ImageFolder(
         root=f"{DATASET_PATH}/test",
         transform=val_transform
     )
 
-    # Calculate how many images go into training and validation.
-    train_size = int(0.8 * len(full_train_dataset))
-    val_size = len(full_train_dataset) - train_size
+    # Make results reproducible.
+    torch.manual_seed(42)
 
-    # Split the training dataset.
-    train_dataset, val_dataset = random_split(
-        full_train_dataset,
-        [train_size, val_size]
-    )
+    # Generate shuffled indices.
+    indices = torch.randperm(len(train_dataset)).tolist()
 
-    # Validation should not use random augmentation.
-    val_dataset.dataset.transform = val_transform
+    train_size = int(0.8 * len(indices))
 
-    # Create DataLoaders.
+    train_indices = indices[:train_size]
+    val_indices = indices[train_size:]
+
+    # Create subsets.
+    train_subset = Subset(train_dataset, train_indices)
+    val_subset = Subset(val_dataset, val_indices)
+
     train_loader = DataLoader(
-        train_dataset,
+        train_subset,
         batch_size=BATCH_SIZE,
         shuffle=True
     )
 
     val_loader = DataLoader(
-        val_dataset,
+        val_subset,
         batch_size=BATCH_SIZE,
         shuffle=False
     )
