@@ -5,7 +5,7 @@ import torch
 # If the code is running on Kaggle, use the Kaggle dataset path.
 # Otherwise, use the local dataset path.
 
-KAGGLE_DATASET_PATH = "/kaggle/input/fer2013"
+KAGGLE_DATASET_PATH = "/kaggle/input/datasets/msambare/fer2013"
 
 LOCAL_DATASET_PATH = "data/FER2013"
 
