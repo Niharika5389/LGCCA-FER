@@ -88,6 +88,11 @@ def validate(model, dataloader, criterion, device):
 
     return average_loss, accuracy
 
+train_losses = []
+val_losses = []
+
+train_accuracies = []
+val_accuracies = []
 
 def train_model(
     model,
@@ -134,6 +139,13 @@ def train_model(
             f"Validation Accuracy: {val_accuracy:.2f}%"
         )
 
+        # Store history
+        train_losses.append(train_loss)
+        val_losses.append(val_loss)
+
+        train_accuracies.append(train_accuracy)
+        val_accuracies.append(val_accuracy)
+
         # Save the model only if validation improves.
         if val_accuracy > best_validation_accuracy:
 
@@ -142,3 +154,5 @@ def train_model(
             torch.save(model.state_dict(), checkpoint_path)
 
             print("Best model saved.")
+            
+        return train_losses, val_losses, train_accuracies, val_accuracies
