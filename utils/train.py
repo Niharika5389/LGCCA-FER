@@ -88,11 +88,7 @@ def validate(model, dataloader, criterion, device):
 
     return average_loss, accuracy
 
-train_losses = []
-val_losses = []
 
-train_accuracies = []
-val_accuracies = []
 
 def train_model(
     model,
@@ -104,6 +100,11 @@ def train_model(
     num_epochs,
     checkpoint_path
 ):
+    train_losses = []
+    val_losses = []
+
+    train_accuracies = []
+    val_accuracies = []
     """
     Runs the complete training process.
     """
