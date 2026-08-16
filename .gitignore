@@ -15,3 +15,12 @@ checkpoints/
 
 # OS
 .DS_Store
+
+# Virtual environment
+venv/
+
+# Dataset (large, regenerable from Kaggle)
+data/FER2013/
+
+# Landmark heatmap cache (large, regenerable from data/landmarks.py)
+data/heatmap_cache/
