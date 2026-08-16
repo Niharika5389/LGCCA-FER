@@ -88,7 +88,11 @@ def validate(model, dataloader, criterion, device):
 
     return average_loss, accuracy
 
+train_losses = []
+val_losses = []
 
+train_accuracies = []
+val_accuracies = []
 
 def train_model(
     model,
@@ -100,11 +104,6 @@ def train_model(
     num_epochs,
     checkpoint_path
 ):
-    train_losses = []
-    val_losses = []
-
-    train_accuracies = []
-    val_accuracies = []
     """
     Runs the complete training process.
     """
@@ -155,5 +154,5 @@ def train_model(
             torch.save(model.state_dict(), checkpoint_path)
 
             print("Best model saved.")
-
-    return train_losses, val_losses, train_accuracies, val_accuracies
+            
+        return train_losses, val_losses, train_accuracies, val_accuracies

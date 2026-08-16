@@ -1,0 +1,27 @@
+# Configuration for src/train_baseline.py (Step 2 - EfficientNet-B0 baseline).
+#
+# Values here follow the Step 2 spec (lr=3e-4, weight_decay=1e-4,
+# batch_size=64, up to 100 epochs, 5-epoch warmup, label smoothing 0.1,
+# patience 15). Dataset/backbone-agnostic constants (image size, num
+# classes, device, seed) continue to live in configs/config.py and are
+# reused rather than duplicated here.
+
+data:
+  csv_path: "data/FER2013/fer2013.csv"
+  heatmap_path: "data/processed/landmark_heatmaps.npy"
+  num_workers: 4
+
+train:
+  learning_rate: 0.0003
+  weight_decay: 0.0001
+  batch_size: 64
+  epochs: 100
+  warmup_epochs: 5
+  label_smoothing: 0.1
+  patience: 15
+  seed: 42
+
+output:
+  experiment_dir: "experiments/baseline_ce"
+  figures_dir: "reports/figures"
+  class_weights_path: "experiments/baseline_ce/class_weights.pt"
