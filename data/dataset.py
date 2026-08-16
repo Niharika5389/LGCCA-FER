@@ -1,6 +1,7 @@
 import torch
 from torch.utils.data import DataLoader, Subset
 from torchvision.datasets import ImageFolder
+from sklearn.model_selection import train_test_split
 
 from configs.config import DATASET_PATH, BATCH_SIZE
 from data.transforms import train_transform, val_transform
@@ -29,16 +30,18 @@ def get_dataloaders():
         transform=val_transform
     )
 
-    # Make results reproducible.
-    torch.manual_seed(42)
+    # Get the label for every image, so the split can respect
+    # class proportions instead of a plain random cut.
+    labels = [label for _, label in train_dataset.samples]
 
-    # Generate shuffled indices.
-    indices = torch.randperm(len(train_dataset)).tolist()
-
-    train_size = int(0.8 * len(indices))
-
-    train_indices = indices[:train_size]
-    val_indices = indices[train_size:]
+    # Stratified split: each class keeps the same 80/20 ratio
+    # between train and val.
+    train_indices, val_indices = train_test_split(
+        range(len(train_dataset)),
+        test_size=0.2,
+        stratify=labels,
+        random_state=42
+    )
 
     # Create subsets.
     train_subset = Subset(train_dataset, train_indices)
